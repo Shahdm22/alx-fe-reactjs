@@ -23,3 +23,5 @@ const RecipeList = () => {
 };
 
 export default RecipeList;
+const addFavorite = useRecipeStore((state) => state.addFavorite);
+<button onClick={() => addFavorite(recipe.id)}>❤️ Favorite</button>
