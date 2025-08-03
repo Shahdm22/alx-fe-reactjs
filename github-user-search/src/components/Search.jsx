@@ -1,10 +1,12 @@
 // src/components/Search.jsx
 import { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { advancedUserSearch } from "../services/githubService";
 
 function Search() {
     const [username, setUsername] = useState("");
-    const [userData, setUserData] = useState(null);
+    const [location, setLocation] = useState("");
+    const [minRepos, setMinRepos] = useState("");
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -12,10 +14,9 @@ function Search() {
         e.preventDefault();
         setLoading(true);
         setError(null);
-        setUserData(null);
         try {
-            const data = await fetchUserData(username);
-            setUserData(data);
+            const results = await advancedUserSearch(username, location, minRepos);
+            setUsers(results);
         } catch (err) {
             setError(true);
         } finally {
@@ -24,27 +25,59 @@ function Search() {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSearch}>
+        <div className="max-w-2xl mx-auto p-4">
+            <form onSubmit={handleSearch} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <h2 className="text-xl font-bold mb-4">Advanced GitHub User Search</h2>
+
                 <input
                     type="text"
+                    placeholder="Username"
+                    className="mb-2 p-2 border rounded w-full"
                     value={username}
-                    placeholder="Search GitHub username"
                     onChange={(e) => setUsername(e.target.value)}
                 />
-                <button type="submit">Search</button>
+
+                <input
+                    type="text"
+                    placeholder="Location"
+                    className="mb-2 p-2 border rounded w-full"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                />
+
+                <input
+                    type="number"
+                    placeholder="Min Repositories"
+                    className="mb-2 p-2 border rounded w-full"
+                    value={minRepos}
+                    onChange={(e) => setMinRepos(e.target.value)}
+                />
+
+                <button
+                    type="submit"
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full"
+                >
+                    Search
+                </button>
             </form>
 
-            {/* Conditional Rendering */}
-            {loading && <p>Loading...</p>}
-            {error && <p>Looks like we cant find the user</p>}
-            {userData && (
-                <div style={{ marginTop: "1rem" }}>
-                    <img src={userData.avatar_url} alt="Avatar" width="100" />
-                    <h2>{userData.name || userData.login}</h2>
-                    <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-                        View Profile
-                    </a>
+            {/* Status Messages */}
+            {loading && <p className="text-blue-600">Loading...</p>}
+            {error && <p className="text-red-600">Looks like we cant find the user</p>}
+
+            {/* Results */}
+            {users.length > 0 && (
+                <div className="space-y-4">
+                    {users.map((user) => (
+                        <div key={user.id} className="p-4 border rounded shadow">
+                            <img src={user.avatar_url} alt="avatar" className="w-16 h-16 rounded-full" />
+                            <h3 className="font-bold">{user.login}</h3>
+                            <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                                View Profile
+                            </a>
+                            {/* Placeholder: you can extend user data later */}
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
@@ -52,4 +85,3 @@ function Search() {
 }
 
 export default Search;
-
