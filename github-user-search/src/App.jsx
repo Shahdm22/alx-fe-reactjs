@@ -1,11 +1,11 @@
 // src/App.jsx
-import Example from "./components/Example"; // ✅ This is what the check looks for
+import Search from "./components/Search";
 
 function App() {
   return (
-    <div>
+    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
       <h1>GitHub User Search App</h1>
-      <Example />
+      <Search />
     </div>
   );
 }
