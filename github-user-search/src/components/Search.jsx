@@ -1,7 +1,6 @@
 // src/components/Search.jsx
 import { useState } from "react";
-import { advancedUserSearch } from "../services/githubService";
-
+import { fetchUserData } from "../services/githubService";
 function Search() {
     const [username, setUsername] = useState("");
     const [location, setLocation] = useState("");
@@ -15,7 +14,8 @@ function Search() {
         setLoading(true);
         setError(null);
         try {
-            const results = await advancedUserSearch(username, location, minRepos);
+
+            const results = await fetchUserData(username, location, minRepos);
             setUsers(results);
         } catch (err) {
             setError(true);
