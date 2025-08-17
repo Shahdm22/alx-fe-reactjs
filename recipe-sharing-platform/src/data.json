@@ -16,5 +16,23 @@
         "title": "Avocado Toast",
         "summary": "Crispy toasted bread topped with creamy avocado, olive oil, and chili flakes.",
         "image": "https://via.placeholder.com/300x200"
+    },
+    {
+        "id": 1,
+        "title": "Spaghetti Carbonara",
+        "summary": "A classic Italian pasta dish...",
+        "image": "https://via.placeholder.com/300x200",
+        "ingredients": [
+            "200g spaghetti",
+            "100g bacon",
+            "2 eggs",
+            "50g parmesan"
+        ],
+        "instructions": [
+            "Boil pasta until al dente.",
+            "Fry bacon until crispy.",
+            "Mix eggs and parmesan.",
+            "Combine everything and serve."
+        ]
     }
 ]
