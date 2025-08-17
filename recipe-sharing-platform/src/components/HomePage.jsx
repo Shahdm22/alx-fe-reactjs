@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 function HomePage() {
     const [recipes, setRecipes] = useState([]);
 
@@ -36,6 +36,13 @@ function HomePage() {
                             >
                                 View Recipe
                             </Link>
+                            <Link
+                                to="/add"
+                                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                            >
+                                Add New Recipe
+                            </Link>
+
                         </div>
                     </div>
                 ))}
@@ -45,3 +52,5 @@ function HomePage() {
 }
 
 export default HomePage;
+
+
