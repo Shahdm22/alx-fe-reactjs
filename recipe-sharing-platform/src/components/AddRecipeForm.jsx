@@ -3,16 +3,27 @@ import { useState } from "react";
 export default function AddRecipeForm() {
     const [title, setTitle] = useState("");
     const [ingredients, setIngredients] = useState("");
-    const [steps, setSteps] = useState(""); // 👈 notice: steps
+    const [steps, setSteps] = useState("");
+
+    // 👇 add error state
+    const [errors, setErrors] = useState({});
+
+    // 👇 add validate function
+    const validate = () => {
+        const newErrors = {};
+        if (!title.trim()) newErrors.title = "Title is required";
+        if (!ingredients.trim()) newErrors.ingredients = "Ingredients are required";
+        if (!steps.trim()) newErrors.steps = "Steps are required";
+
+        setErrors(newErrors); // 👈 must be present
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!title || !ingredients || !steps) {
-            alert("All fields are required!");
-            return;
-        }
+        if (!validate()) return; // 👈 use validate function
         console.log({ title, ingredients, steps });
-        // You could also send this to backend later
+        alert("Recipe submitted successfully!");
     };
 
     return (
@@ -27,6 +38,7 @@ export default function AddRecipeForm() {
                     onChange={(e) => setTitle(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
+                {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
 
                 {/* Ingredients */}
                 <textarea
@@ -35,15 +47,20 @@ export default function AddRecipeForm() {
                     onChange={(e) => setIngredients(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
                 ></textarea>
+                {errors.ingredients && (
+                    <p className="text-red-500 text-sm">{errors.ingredients}</p>
+                )}
 
-                {/* Steps 👈 required */}
+                {/* Steps */}
                 <textarea
                     placeholder="Preparation Steps"
                     value={steps}
                     onChange={(e) => setSteps(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
                 ></textarea>
+                {errors.steps && <p className="text-red-500 text-sm">{errors.steps}</p>}
 
+                {/* Submit */}
                 <button
                     type="submit"
                     className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition"
